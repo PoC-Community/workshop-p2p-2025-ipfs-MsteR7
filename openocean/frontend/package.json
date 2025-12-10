@@ -17,6 +17,7 @@
     "axios": "^1.7.2",
     "env-var": "^7.5.0",
     "framer-motion": "^11.2.11",
+    "pinata": "^2.5.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.52.0",
