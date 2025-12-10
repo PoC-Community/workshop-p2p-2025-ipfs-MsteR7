@@ -24,7 +24,7 @@ export const urlFromIpfsHash = (hash: string) =>
     : `https://${constants.pinataGateway}/ipfs/${hash}`;
 
 export const urlFromFileName = (filename: string): string => {
-  const url = `http://localhost:8080/uploads/${filename}`;
+  const url = urlFromIpfsHash(filename);
   console.log(url);
   return url;
 }

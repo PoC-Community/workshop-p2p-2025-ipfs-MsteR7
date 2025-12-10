@@ -16,7 +16,7 @@ import SingleUploadImage from "../molecules/SingleUploadImage";
 import { colors } from "../theme";
 import { useForm } from "react-hook-form";
 import { RiImageAddFill } from "react-icons/ri";
-import usePostImage from "../hooks/usePostImage";
+import usePinFileToIPFS from "../hooks/usePinFileToIPFS";
 import { useNavigate } from "react-router-dom";
 
 interface MintForm {
@@ -41,25 +41,26 @@ const UploadPage: FC = () => {
 
   const navigate = useNavigate();
 
-  const { mutate: postImage, isPending: isPendingPostImage } =
-    usePostImage();
+  const { mutate: pinToIPFS, isPending: isPendingPinToIPFS } =
+    usePinFileToIPFS();
 
   const onSubmit = handleSubmit((data) => {
     if (!data.file) {
       setError("file", { message: "This field is required" });
       return;
     }
-    postImage({ image: data.file, name: data.name }, {
+    pinToIPFS({ image: data.file, name: data.name }, {
       onSuccess: (res) => {
         toast({
           colorScheme: "purple",
-          title: "Image uploaded",
-          description: "Your image has been uploaded successfully!",
+          title: "Image uploaded to IPFS",
+          description: `Hash IPFS: ${res.IpfsHash}`,
           status: "success",
           duration: 5000,
           isClosable: true,
         });
-        navigate(`/images/${res.data.id}`)
+        // Rediriger vers la page avec le hash IPFS
+        navigate(`/images/${res.IpfsHash}`)
       },
       onError: (err) => {
         console.log(err)
@@ -133,7 +134,7 @@ const UploadPage: FC = () => {
               fontWeight="black"
               fontSize="32px"
               gap="12px"
-              isLoading={isPendingPostImage}
+              isLoading={isPendingPinToIPFS}
             >
               Upload
               <Icon as={RiImageAddFill} />
